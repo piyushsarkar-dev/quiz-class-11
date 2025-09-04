@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="bn">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1" />
+		<title>
+			WBCHSE একাদশ শ্রেণী – কম্পিউটার অ্যাপ্লিকেশন MCQ (৫০ প্রশ্ন)
+		</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap"
+			rel="stylesheet" />
+		<style>
+			:root {
+				--bg: #0b1024;
+				--card: #111827;
+				--muted: #94a3b8;
+				--text: #e5e7eb;
+				--accent: #22c55e;
+				--accent2: #3b82f6;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--text);
+				font-family: "Noto Sans Bengali", system-ui, -apple-system,
+					Segoe UI, Roboto, Arial;
+			}
+			.wrap {
+				max-width: 1000px;
+				margin: 28px auto;
+				padding: 18px;
+			}
+			.card {
+				background: linear-gradient(180deg, #081026 0%, #0b1024 100%);
+				border-radius: 14px;
+				padding: 20px;
+				border: 1px solid rgba(255, 255, 255, 0.04);
+				box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+			}
+			.header {
+				display: flex;
+				align-items: flex-start;
+				justify-content: space-between;
+				gap: 12px;
+			}
+			h1 {
+				margin: 0;
+				font-size: 20px;
+			}
+			.note {
+				color: var(--muted);
+				font-size: 13px;
+				margin-top: 6px;
+			}
+			.body {
+				display: grid;
+				grid-template-columns: 1fr 320px;
+				gap: 16px;
+				margin-top: 18px;
+			}
+			.main {
+				background: rgba(255, 255, 255, 0.02);
+				padding: 14px;
+				border-radius: 12px;
+			}
+			.side {
+				padding: 12px;
+				border-radius: 12px;
+				background: rgba(255, 255, 255, 0.01);
+				border: 1px solid rgba(255, 255, 255, 0.03);
+			}
+			.progress {
+				height: 10px;
+				background: #081226;
+				border-radius: 999px;
+				overflow: hidden;
+			}
+			.progress > i {
+				display: block;
+				height: 100%;
+				width: 0;
+				background: linear-gradient(
+					90deg,
+					var(--accent),
+					var(--accent2)
+				);
+				transition: width 0.25s linear;
+			}
+			.qno {
+				font-size: 13px;
+				color: var(--muted);
+			}
+			.qtext {
+				font-weight: 700;
+				font-size: 18px;
+				margin: 10px 0;
+			}
+			ul.opts {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				gap: 10px;
+			}
+			ul.opts li {
+				padding: 12px;
+				border-radius: 10px;
+				border: 1px solid rgba(255, 255, 255, 0.06);
+				cursor: pointer;
+				background: rgba(255, 255, 255, 0.01);
+			}
+			ul.opts li.selected {
+				outline: 2px solid rgba(59, 130, 246, 0.18);
+				background: rgba(59, 130, 246, 0.05);
+			}
+			.actions {
+				display: flex;
+				gap: 10px;
+				justify-content: flex-end;
+				margin-top: 12px;
+			}
+			button {
+				padding: 10px 14px;
+				border-radius: 10px;
+				border: none;
+				cursor: pointer;
+				font-weight: 700;
+			}
+			.btn-primary {
+				background: linear-gradient(
+					90deg,
+					var(--accent2),
+					var(--accent)
+				);
+				color: #051226;
+			}
+			.btn-ghost {
+				background: transparent;
+				border: 1px solid rgba(255, 255, 255, 0.06);
+				color: var(--text);
+			}
+			.score {
+				display: none;
+				margin-top: 14px;
+				padding: 12px;
+				border-radius: 12px;
+				background: rgba(0, 0, 0, 0.35);
+			}
+			.score h3 {
+				margin: 6px 0;
+			}
+			.review {
+				display: none;
+				margin-top: 12px;
+				padding: 10px;
+				border-radius: 8px;
+				max-height: 340px;
+				overflow: auto;
+				background: rgba(255, 255, 255, 0.01);
+			}
+			.rev-item {
+				padding: 8px;
+				border-bottom: 1px dashed rgba(255, 255, 255, 0.04);
+			}
+			.pass {
+				color: #7ee787;
+				font-weight: 800;
+			}
+			.fail {
+				color: #ff9b9b;
+				font-weight: 800;
+			}
+			.confetti-canvas {
+				position: fixed;
+				left: 0;
+				top: 0;
+				pointer-events: none;
+				z-index: 9999;
+			}
+			@media (max-width: 900px) {
+				.body {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="card">
+				<div class="header">
+					<div>
+						<h1>
+							WBCHSE — কম্পিউটার অ্যাপ্লিকেশন (Class 11) MCQ কুইজ
+							— ৫০ প্রশ্ন
+						</h1>
+						<div class="note">
+							নোট: প্রতিটি প্রশ্নের মান ১; নেগেটিভ নেই। প্রশ্নগুলো
+							এলোমেলোভাবে দেখানো হবে; শেষ প্রশ্নে পৌঁছালে 'End
+							Test' বোতাম দেখাবে। স্কোর কেবল শেষ করার পর দেখাবে।
+						</div>
+					</div>
+					<div
+						style="
+							text-align: right;
+							color: var(--muted);
+							font-size: 13px;
+						">
+						Good luck Puja 🍀
+					</div>
+				</div>
+
+				<div class="body">
+					<div class="main">
+						<div
+							class="progress"
+							aria-hidden="true">
+							<i id="bar"></i>
+						</div>
+						<div style="margin-top: 10px">
+							<span class="qno"
+								>প্রশ্ন <span id="qno">1</span> /
+								<span id="total">50</span></span
+							>
+							<div
+								class="qtext"
+								id="qtext">
+								লোড হচ্ছে...
+							</div>
+						</div>
+
+						<ul
+							class="opts"
+							id="opts"></ul>
+
+						<div class="actions">
+							<button
+								id="prev"
+								class="btn-ghost">
+								Previous
+							</button>
+							<button
+								id="next"
+								class="btn-primary">
+								Next
+							</button>
+							<button
+								id="end"
+								class="btn-ghost"
+								style="display: none">
+								End Test
+							</button>
+						</div>
+
+						<div
+							id="scoreBox"
+							class="score">
+							<h3 id="scoreHeading">আপনার ফলাফল</h3>
+							<div id="scoreText">0 / 50 (0%)</div>
+							<div
+								id="scoreRemark"
+								style="
+									margin-top: 8px;
+									color: var(--muted);
+								"></div>
+							<div
+								style="
+									margin-top: 12px;
+									display: flex;
+									gap: 8px;
+									justify-content: center;
+								">
+								<button
+									id="retry"
+									class="btn-primary">
+									আবার শুরু করুন
+								</button>
+								<button
+									id="showReview"
+									class="btn-ghost">
+									উত্তর পর্যালোচনা
+								</button>
+							</div>
+						</div>
+
+						<div
+							id="review"
+							class="review"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<canvas
+			id="confetti"
+			class="confetti-canvas"></canvas>
+
+		<script>
+			// ====== Question bank (50 questions) as user provided + a few extras ======
+			const BANK = [
+				{
+					q: "CPU-এর কোন অংশ নির্দেশ পালন করে?",
+					opts: ["ALU", "CU", "Register", "Memory Unit"],
+					ans: 1,
+				},
+				{
+					q: "Cache Memory কোথায় থাকে?",
+					opts: [
+						"CPU ও RAM এর মধ্যে",
+						"Hard Disk",
+						"Secondary Storage",
+						"Pen drive",
+					],
+					ans: 0,
+				},
+				{
+					q: "কোনটি Volatile Memory?",
+					opts: ["ROM", "RAM", "Flash Memory", "CD-ROM"],
+					ans: 1,
+				},
+				{
+					q: "1 PB = ?",
+					opts: ["1024 TB", "1024 GB", "1000 TB", "2048 GB"],
+					ans: 0,
+				},
+				{
+					q: "মেইনফ্রেম কম্পিউটার সাধারণত ব্যবহৃত হয় –",
+					opts: [
+						"আবহাওয়া পূর্বাভাসে",
+						"ব্যাঙ্কিং/প্রতিষ্ঠানিক কাজের জন্য",
+						"ব্যক্তিগত কাজে",
+						"গেম খেলায়",
+					],
+					ans: 1,
+				},
+				{
+					q: "Assembler অনুবাদ করে –",
+					opts: [
+						"Machine → High level",
+						"Assembly → Machine",
+						"High level → Assembly",
+						"Machine → Assembly",
+					],
+					ans: 1,
+				},
+				{
+					q: "Compiler কাজ করে –",
+					opts: [
+						"লাইন বাই লাইন",
+						"একসাথে পুরো প্রোগ্রাম",
+						"শুধু Error Check",
+						"Data Process",
+					],
+					ans: 1,
+				},
+				{
+					q: "Windows কোন ধরণের OS?",
+					opts: ["CUI", "GUI", "Time Sharing", "Real Time"],
+					ans: 1,
+				},
+				{
+					q: "Linux হলো –",
+					opts: [
+						"Single user OS",
+						"Multi-user, Multitasking OS",
+						"Assembly OS",
+						"Embedded OS",
+					],
+					ans: 1,
+				},
+				{
+					q: "GUI-এর পূর্ণরূপ –",
+					opts: [
+						"Graphical User Interface",
+						"General User Interaction",
+						"Graphical Universal Input",
+						"General Utility Interface",
+					],
+					ans: 0,
+				},
+
+				{
+					q: "(1101)_2 = ? (Decimal এ)",
+					opts: ["11", "12", "13", "14"],
+					ans: 2,
+				},
+				{
+					q: "(45)_10 = ? (Binary এ)",
+					opts: ["101011", "110101", "101101", "100111"],
+					ans: 2,
+				},
+				{
+					q: "(7B)₁₆ = ? (Decimal এ)",
+					opts: ["123", "124", "125", "126"],
+					ans: 0,
+				},
+				{
+					q: "ASCII-এর পূর্ণরূপ কী?",
+					opts: [
+						"American Standard Code for Information Interchange",
+						"Australian Standard Computer Interface Information",
+						"American System for Code International Information",
+						"Advanced Standard Code for Interchange of Instruction",
+					],
+					ans: 0,
+				},
+				{
+					q: "Excess-3 হলো –",
+					opts: [
+						"Weighted Code",
+						"Non-weighted Code",
+						"Hex Code",
+						"Binary Fraction",
+					],
+					ans: 1,
+				},
+				{
+					q: "Universal Gate কোনটি?",
+					opts: ["AND", "OR", "NAND", "XOR"],
+					ans: 2,
+				},
+				{
+					q: "De Morgan Theorem: (A + B)’ = ?",
+					opts: ["A'B'", "A'+B'", "AB", "A+B"],
+					ans: 0,
+				},
+				{
+					q: "XOR গেটে আউটপুট 1 হয় –",
+					opts: [
+						"উভয় ইনপুট 1 হলে",
+						"ইনপুট ভিন্ন হলে",
+						"উভয় ইনপুট 0 হলে",
+						"সবসময় 1",
+					],
+					ans: 1,
+				},
+				{
+					q: "SOP এর পূর্ণরূপ –",
+					opts: [
+						"Sum of Products",
+						"Product of Sums",
+						"Simplification of Product",
+						"Systematic Output Process",
+					],
+					ans: 0,
+				},
+				{
+					q: "NOT গেটের প্রতীক হলো –",
+					opts: [
+						"আয়তক্ষেত্র",
+						"ত্রিভুজ + ছোট বৃত্ত",
+						"বৃত্ত",
+						"রম্বস",
+					],
+					ans: 1,
+				},
+
+				{
+					q: "কোনটি High-Level Language?",
+					opts: ["C", "Assembly", "Machine", "Hexadecimal"],
+					ans: 0,
+				},
+				{
+					q: "Instruction এর অর্থ –",
+					opts: [
+						"কম্পিউটারকে দেওয়া একক নির্দেশ",
+						"পুরো প্রোগ্রাম",
+						"হার্ডওয়্যার সার্কিট",
+						"ফ্লোচার্টের প্রতীক",
+					],
+					ans: 0,
+				},
+				{
+					q: "Structured Programming এর বৈশিষ্ট্য –",
+					opts: [
+						"GOTO ব্যবহার",
+						"Step-by-step modular পদ্ধতি",
+						"Assembly ভিত্তিক",
+						"Object-oriented only",
+					],
+					ans: 1,
+				},
+				{
+					q: "OOP-এর বৈশিষ্ট্য নয় কোনটি?",
+					opts: [
+						"Encapsulation",
+						"Inheritance",
+						"Polymorphism",
+						"GOTO statement",
+					],
+					ans: 3,
+				},
+				{
+					q: "Flowchart-এ Input/Output এর প্রতীক –",
+					opts: ["Rectangle", "Parallelogram", "Diamond", "Oval"],
+					ans: 1,
+				},
+				{
+					q: "অ্যালগরিদম উপস্থাপন করা যায় –",
+					opts: [
+						"Flowchart ও Pseudocode দিয়ে",
+						"শুধুই Syntax দিয়ে",
+						"শুধুই Language দিয়ে",
+						"Diagram ছাড়া কিছু নয়",
+					],
+					ans: 0,
+				},
+				{
+					q: "Debugging মানে –",
+					opts: [
+						"প্রোগ্রাম লেখা",
+						"Error খুঁজে সংশোধন",
+						"কোড কমানো",
+						"Output দেখা",
+					],
+					ans: 1,
+				},
+				{
+					q: "Time Complexity মাপে –",
+					opts: [
+						"Execution Time",
+						"Memory Usage",
+						"কোডের দৈর্ঘ্য",
+						"কম্পাইলিং গতি",
+					],
+					ans: 0,
+				},
+				{
+					q: "Space Complexity মাপে –",
+					opts: [
+						"Memory Requirement",
+						"Processing Speed",
+						"File Size",
+						"Input Number",
+					],
+					ans: 0,
+				},
+				{
+					q: "Problem Solving এর প্রথম ধাপ –",
+					opts: ["Analysing", "Coding", "Debugging", "Testing"],
+					ans: 0,
+				},
+
+				{
+					q: "সারি ও কলামের ছেদবিন্দুকে কী বলে?",
+					opts: ["Cell", "Address", "Worksheet", "Workbook"],
+					ans: 0,
+				},
+				{
+					q: "A1 থেকে A10 পর্যন্ত Cell Range লেখা হয় –",
+					opts: ["A1-A10", "A1:A10", "A1.A10", "A1 to A10"],
+					ans: 1,
+				},
+				{
+					q: "একটি ওয়ার্কবুকের ভিতরে কতগুলো শীট থাকতে পারে?",
+					opts: ["একটি", "অনেকগুলো", "তিনটি", "দুইটি"],
+					ans: 1,
+				},
+				{
+					q: "কোন সফটওয়্যার Spreadsheet নয়?",
+					opts: [
+						"MS Excel",
+						"Google Sheets",
+						"OpenOffice Calc",
+						"PowerPoint",
+					],
+					ans: 3,
+				},
+				{
+					q: "Spreadsheet-এ যেকোনো ফর্মুলা শুরু হয় –",
+					opts: ["=", "+", "@", "#"],
+					ans: 0,
+				},
+				{
+					q: "MAX ফাংশন দেয় –",
+					opts: ["গড়", "সর্বোচ্চ মান", "সর্বনিম্ন মান", "শূন্য মান"],
+					ans: 1,
+				},
+				{
+					q: "COUNTBLANK ফাংশন গণনা করে –",
+					opts: [
+						"খালি সেল",
+						"খালি নয় এমন সেল",
+						"শুধুই সংখ্যা",
+						"শুধুই টেক্সট",
+					],
+					ans: 0,
+				},
+				{
+					q: "IF ফাংশন ব্যবহৃত হয় –",
+					opts: [
+						"শর্তাধীন ফলাফল দেখাতে",
+						"গড় বের করতে",
+						"Cell Format পরিবর্তনে",
+						"Sorting এ",
+					],
+					ans: 0,
+				},
+
+				{
+					q: "AVERAGEIF ব্যবহৃত হয় –",
+					opts: [
+						"শর্ত মেনে গড় বের করতে",
+						"সব সেলের যোগফল করতে",
+						"Error Check করতে",
+						"Pie Chart তৈরি করতে",
+					],
+					ans: 0,
+				},
+				{
+					q: "Pie Chart ব্যবহার হয় –",
+					opts: [
+						"তুলনা দেখাতে",
+						"অংশ-সমগ্র সম্পর্ক দেখাতে",
+						"ডেটা Sort করতে",
+						"Data Filter করতে",
+					],
+					ans: 1,
+				},
+				{
+					q: "Bar Chart ভালো হয় –",
+					opts: [
+						"বিক্রয় তুলনা করতে",
+						"গড় বের করতে",
+						"Error Check করতে",
+						"Sorting করতে",
+					],
+					ans: 0,
+				},
+				{
+					q: "Goal Seek এর কাজ –",
+					opts: [
+						"Output থেকে Input খুঁজে বের করা",
+						"Workbook সুরক্ষিত করা",
+						"Data Validation করা",
+						"Chart বানানো",
+					],
+					ans: 0,
+				},
+				{
+					q: "Workbook Protection মানে –",
+					opts: [
+						"Workbook Password Protect করা",
+						"Cell Format করা",
+						"Table Insert করা",
+						"Data Validation করা",
+					],
+					ans: 0,
+				},
+				{
+					q: "CSV ফাইল থেকে ডেটা আনা হলে তাকে বলে –",
+					opts: ["Importing", "Exporting", "Linking", "Formatting"],
+					ans: 0,
+				},
+
+				// 6 extra questions to reach 50
+				{
+					q: "Loader কোন কাজ করে?",
+					opts: [
+						"প্রোগ্রাম মেমরিতে লোড করে",
+						"অবজেক্ট ফাইল লিংক করে",
+						"Assembly অনুবাদ করে",
+						"ত্রুটি পরীক্ষা করে",
+					],
+					ans: 0,
+				},
+				{
+					q: "Linker কী করে?",
+					opts: [
+						"অবজেক্ট ফাইলগুলোকে এক করে executable করে",
+						"কম্পাইল করে",
+						"মেমরি ক্লিয়ার করে",
+						"ইন্টারপ্রেট করে",
+					],
+					ans: 0,
+				},
+				{
+					q: "1 TB = ? GB",
+					opts: ["1000 GB", "1024 GB", "1200 GB", "2048 GB"],
+					ans: 1,
+				},
+				{
+					q: "Unicode কেন ব্যবহৃত হয়?",
+					opts: [
+						"শুধু ভারতীয় ভাষার জন্য",
+						"শুধু ইংরেজির জন্য",
+						"বিশ্বের অধিকাংশ ভাষা সমর্থনের জন্য",
+						"সংখ্যা উপস্থাপনার জন্য",
+					],
+					ans: 2,
+				},
+				{
+					q: "Non-weighted code উদাহরণ কোনটি?",
+					opts: ["BCD", "8421", "Binary", "Gray Code"],
+					ans: 3,
+				},
+				{
+					q: "COUNTIFS ফাংশন ব্যবহৃত হয়—",
+					opts: [
+						"একটি শর্তে",
+						"একাধিক শর্তে",
+						"ত্রুটি ধরতে",
+						"টেক্সট যোগ করতে",
+					],
+					ans: 1,
+				},
+			];
+
+			// shuffle helper
+			const shuffleArr = (arr) =>
+				arr
+					.map((v) => [Math.random(), v])
+					.sort((a, b) => a[0] - b[0])
+					.map((x) => x[1]);
+
+			function shuffleOptions(item) {
+				const mapped = item.opts.map((o, i) => ({ o, i }));
+				const s = shuffleArr(mapped);
+				const newAns = s.findIndex((x) => x.i === item.ans);
+				return { q: item.q, opts: s.map((x) => x.o), ans: newAns };
+			}
+
+			// prepare questions - shuffle order and options
+			let QUESTIONS = shuffleArr(BANK).map(shuffleOptions);
+			// ensure exactly 50 (if more or less) - trim or repeat safe copy
+			if (QUESTIONS.length > 50) QUESTIONS = QUESTIONS.slice(0, 50);
+			while (QUESTIONS.length < 50) {
+				// duplicate random ones until 50
+				const copy = JSON.parse(
+					JSON.stringify(
+						QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)]
+					)
+				);
+				QUESTIONS.push(copy);
+			}
+
+			const total = QUESTIONS.length;
+			document.getElementById("total").textContent = total;
+
+			// state
+			let idx = 0;
+			const picks = Array(total).fill(null);
+
+			// elements
+			const el = {
+				qno: document.getElementById("qno"),
+				qtext: document.getElementById("qtext"),
+				opts: document.getElementById("opts"),
+				bar: document.getElementById("bar"),
+				prev: document.getElementById("prev"),
+				next: document.getElementById("next"),
+				end: document.getElementById("end"),
+				scoreBox: document.getElementById("scoreBox"),
+				scoreText: document.getElementById("scoreText"),
+				scoreRemark: document.getElementById("scoreRemark"),
+				retry: document.getElementById("retry"),
+				showReview: document.getElementById("showReview"),
+				review: document.getElementById("review"),
+			};
+
+			function render() {
+				el.qno.textContent = idx + 1;
+				el.qtext.textContent = QUESTIONS[idx].q;
+				el.opts.innerHTML = "";
+				QUESTIONS[idx].opts.forEach((o, i) => {
+					const li = document.createElement("li");
+					li.innerHTML = `<span style="margin-right:8px;font-weight:700">${
+						["(ক)", "(খ)", "(গ)", "(ঘ)"][i]
+					}</span>${o}`;
+					if (picks[idx] === i) li.classList.add("selected");
+					li.addEventListener("click", () => {
+						picks[idx] = i;
+						render();
+					});
+					el.opts.appendChild(li);
+				});
+
+				// progress
+				const pct = Math.round((idx / total) * 100);
+				el.bar.style.width = pct + "%";
+
+				// buttons
+				el.prev.disabled = idx === 0;
+				el.next.disabled = idx === total - 1;
+				el.end.style.display =
+					idx === total - 1 ? "inline-block" : "none";
+			}
+
+			function calc() {
+				let score = 0;
+				const detail = [];
+				QUESTIONS.forEach((q, i) => {
+					const ok = picks[i] === q.ans;
+					if (ok) score++;
+					detail.push({
+						q: q.q,
+						opts: q.opts,
+						pick: picks[i],
+						ans: q.ans,
+						ok,
+					});
+				});
+				return { score, detail };
+			}
+
+			function showResult() {
+				const { score, detail } = calc();
+				const pct = Math.round((score / total) * 100);
+				el.scoreText.textContent = `${score} / ${total} (${pct}%)`;
+				el.scoreRemark.textContent =
+					pct >= 50 ? "🎉 পাশ হয়েছে!" : "❌ ফেল – আরও অনুশীলন করুন";
+				el.scoreBox.style.display = "block";
+				// render review but keep hidden until user clicks "উত্তর পর্যালোচনা"
+				el.review.innerHTML = "";
+				detail.forEach((d, i) => {
+					const div = document.createElement("div");
+					div.className = "rev-item";
+					const pickText =
+						d.pick != null
+							? `${["(ক)", "(খ)", "(গ)", "(ঘ)"][d.pick]} ${
+									d.opts[d.pick]
+							  }`
+							: "—";
+					const ansText = `${["(ক)", "(খ)", "(গ)", "(ঘ)"][d.ans]} ${
+						d.opts[d.ans]
+					}`;
+					div.innerHTML = `<strong>${i + 1}.</strong> ${
+						d.q
+					}<br>আপনার উত্তর: <span class="${
+						d.ok ? "pass" : "fail"
+					}">${pickText}</span><br>সঠিক: <span class="pass">${ansText}</span>`;
+					el.review.appendChild(div);
+				});
+
+				// confetti for pass
+				if (pct >= 50) launchConfetti();
+				else showSad();
+
+				// scroll to score
+				setTimeout(() => {
+					window.scrollTo({
+						top: document.body.scrollHeight,
+						behavior: "smooth",
+					});
+				}, 150);
+			}
+
+			// simple confetti
+			function launchConfetti() {
+				const canvas = document.getElementById("confetti");
+				const ctx = canvas.getContext("2d");
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+				const colors = [
+					"#ff5f6d",
+					"#ffc371",
+					"#7ee787",
+					"#6cc3ff",
+					"#c98bff",
+				];
+				const pieces = [];
+				for (let i = 0; i < 120; i++) {
+					pieces.push({
+						x: Math.random() * canvas.width,
+						y: Math.random() * -canvas.height,
+						w: 6 + Math.random() * 8,
+						h: 8 + Math.random() * 10,
+						c: colors[Math.floor(Math.random() * colors.length)],
+						r: Math.random() * 360,
+						vx: (Math.random() - 0.5) * 2,
+						vy: 2 + Math.random() * 4,
+					});
+				}
+				let t = 0;
+				function anim() {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					for (const p of pieces) {
+						p.x += p.vx;
+						p.y += p.vy;
+						p.r += 4;
+						ctx.save();
+						ctx.translate(p.x, p.y);
+						ctx.rotate((p.r * Math.PI) / 180);
+						ctx.fillStyle = p.c;
+						ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+						ctx.restore();
+						if (p.y > canvas.height + 20) {
+							p.y = -20;
+							p.x = Math.random() * canvas.width;
+						}
+					}
+					t++;
+					if (t < 220) requestAnimationFrame(anim);
+					else ctx.clearRect(0, 0, canvas.width, canvas.height);
+				}
+				anim();
+			}
+
+			function showSad() {
+				// small shake effect on score box
+				const box = document.getElementById("scoreBox");
+				box.classList.add("shake");
+				setTimeout(() => box.classList.remove("shake"), 800);
+			}
+
+			// events
+			document.getElementById("prev").addEventListener("click", () => {
+				if (idx > 0) {
+					idx--;
+					render();
+				}
+			});
+			document.getElementById("next").addEventListener("click", () => {
+				if (idx < total - 1) {
+					idx++;
+					render();
+				}
+			});
+			document.getElementById("end").addEventListener("click", () => {
+				showResult();
+			});
+			document.getElementById("retry").addEventListener("click", () => {
+				location.reload();
+			});
+			document
+				.getElementById("showReview")
+				.addEventListener("click", () => {
+					el.review.style.display =
+						el.review.style.display === "block" ? "none" : "block";
+					el.review.scrollIntoView({ behavior: "smooth" });
+				});
+
+			// initial render
+			render();
+
+			// resize confetti canvas on window resize
+			window.addEventListener("resize", () => {
+				const c = document.getElementById("confetti");
+				c.width = window.innerWidth;
+				c.height = window.innerHeight;
+			});
+		</script>
+	</body>
+</html>
