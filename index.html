@@ -180,6 +180,89 @@
 				pointer-events: none;
 				z-index: 9999;
 			}
+			.balloon-layer {
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				overflow: hidden;
+				z-index: 9998;
+			}
+			.balloon {
+				position: absolute;
+				bottom: -140px;
+				left: 50%;
+				will-change: transform;
+				animation: balloon-rise var(--dur, 11s) linear var(--delay, 0s)
+					forwards;
+			}
+			.balloon-inner {
+				width: var(--w, 44px);
+				height: var(--h, 58px);
+				border-radius: 50% 50% 45% 45%;
+				background: radial-gradient(
+						circle at 30% 30%,
+						rgba(255, 255, 255, 0.35),
+						rgba(255, 255, 255, 0) 45%
+					),
+					linear-gradient(
+						180deg,
+						var(--c1, var(--accent2)),
+						var(--c2, var(--accent))
+					);
+				opacity: 0.92;
+				filter: saturate(1.05);
+				position: relative;
+				animation: balloon-sway 3.2s ease-in-out infinite;
+			}
+			.balloon-inner::after {
+				content: "";
+				position: absolute;
+				left: 50%;
+				bottom: -8px;
+				transform: translateX(-50%);
+				width: 10px;
+				height: 10px;
+				background: rgba(255, 255, 255, 0.12);
+				clip-path: polygon(50% 100%, 0 0, 100% 0);
+			}
+			.balloon-inner::before {
+				content: "";
+				position: absolute;
+				left: 50%;
+				bottom: -92px;
+				transform: translateX(-50%);
+				width: 2px;
+				height: 90px;
+				background: rgba(229, 231, 235, 0.18);
+				border-radius: 999px;
+			}
+			@keyframes balloon-rise {
+				0% {
+					transform: translate3d(0, 0, 0);
+					opacity: 0;
+				}
+				10% {
+					opacity: 1;
+				}
+				100% {
+					transform: translate3d(0, -140vh, 0);
+					opacity: 0.05;
+				}
+			}
+			@keyframes balloon-sway {
+				0% {
+					transform: translateX(0) rotate(-2deg);
+				}
+				50% {
+					transform: translateX(var(--sway, 18px)) rotate(2deg);
+				}
+				100% {
+					transform: translateX(0) rotate(-2deg);
+				}
+			}
 			@media (max-width: 900px) {
 				.body {
 					grid-template-columns: 1fr;
@@ -208,7 +291,7 @@
 							color: var(--muted);
 							font-size: 13px;
 						">
-						Good luck User 🍀
+						<div id="greeting">Good luck User 🍀</div>
 					</div>
 				</div>
 
@@ -298,6 +381,85 @@
 			class="confetti-canvas"></canvas>
 
 		<script>
+			function launchBalloons({ count = 12 } = {}) {
+				if (
+					window.matchMedia &&
+					window.matchMedia("(prefers-reduced-motion: reduce)")
+						.matches
+				)
+					return;
+
+				const existing = document.getElementById("balloonLayer");
+				if (existing) existing.remove();
+
+				const layer = document.createElement("div");
+				layer.className = "balloon-layer";
+				layer.id = "balloonLayer";
+				document.body.appendChild(layer);
+
+				let maxMs = 0;
+				for (let i = 0; i < count; i++) {
+					const balloon = document.createElement("div");
+					balloon.className = "balloon";
+
+					const inner = document.createElement("div");
+					inner.className = "balloon-inner";
+
+					const left = Math.random() * 100;
+					const w = 34 + Math.random() * 22;
+					const h = w * (1.25 + Math.random() * 0.25);
+					const dur = 9 + Math.random() * 6; // seconds
+					const delay = Math.random() * 1.8; // seconds
+					const sway =
+						(Math.random() < 0.5 ? -1 : 1) *
+						(12 + Math.random() * 18);
+
+					balloon.style.left = `${left.toFixed(2)}%`;
+					balloon.style.setProperty("--w", `${w.toFixed(0)}px`);
+					balloon.style.setProperty("--h", `${h.toFixed(0)}px`);
+					balloon.style.setProperty("--dur", `${dur.toFixed(2)}s`);
+					balloon.style.setProperty(
+						"--delay",
+						`${delay.toFixed(2)}s`
+					);
+					balloon.style.setProperty("--sway", `${sway.toFixed(0)}px`);
+
+					// use existing theme accents only
+					if (Math.random() < 0.5) {
+						balloon.style.setProperty("--c1", "var(--accent2)");
+						balloon.style.setProperty("--c2", "var(--accent)");
+					} else {
+						balloon.style.setProperty("--c1", "var(--accent)");
+						balloon.style.setProperty("--c2", "var(--accent2)");
+					}
+
+					balloon.appendChild(inner);
+					layer.appendChild(balloon);
+
+					const totalMs = (dur + delay) * 1000;
+					if (totalMs > maxMs) maxMs = totalMs;
+				}
+
+				window.setTimeout(() => layer.remove(), maxMs + 300);
+			}
+
+			document.addEventListener("DOMContentLoaded", () => {
+				const greetingEl = document.getElementById("greeting");
+				if (greetingEl) {
+					const rawName = window.prompt("আপনার নাম কী?");
+					const cleanedName = (rawName ?? "")
+						.trim()
+						.replace(/\s+/g, " ");
+					const finalName = cleanedName.length
+						? cleanedName.slice(0, 40)
+						: "User";
+
+					greetingEl.textContent = `Good luck ${finalName} 🍀`;
+				}
+
+				launchBalloons({ count: 12 });
+			});
+
 			// ====== Question bank (50 questions) as user provided + a few extras ======
 			const BANK = [
 				{
